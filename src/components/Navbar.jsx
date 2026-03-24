@@ -11,11 +11,7 @@ function Navbar({ favoriteCount }) {
     >
       <h1>DevBoard</h1>
 
-      {favoriteCount > 0 && (
-        <div style={{ background: "#e53e3e", padding: "5px 10px", borderRadius: "20px" }}>
-          ❤️ {favoriteCount}
-        </div>
-      )}
+      {favoriteCount > 0 && <div>❤️ {favoriteCount}</div>}
     </nav>
   );
 }

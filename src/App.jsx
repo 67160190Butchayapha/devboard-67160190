@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // ✅ เพิ่ม useEffect
 import Navbar from "./components/Navbar";
 import PostList from "./components/PostList";
 import UserCard from "./components/UserCard";
@@ -35,26 +35,34 @@ const USERS = [
 
 function App() {
   const [posts, setPosts] = useState(INITIAL_POSTS);
-  const [favorites, setFavorites] = useState([]); // เก็บ id ที่ถูกใจ
 
-  // Toggle ถูกใจ/ยกเลิก
+  // ❗ แก้ตรงนี้ (โหลดจาก localStorage)
+  const [favorites, setFavorites] = useState(() => {
+    return JSON.parse(localStorage.getItem("favorites") || "[]");
+  });
+
+  // ❗ เพิ่มตรงนี้ (บันทึกลง localStorage)
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  // ของเดิม
   function handleToggleFavorite(postId) {
     setFavorites(
       (prev) =>
         prev.includes(postId)
-          ? prev.filter((id) => id !== postId) // ลบออก
-          : [...prev, postId], // เพิ่มเข้า
+          ? prev.filter((id) => id !== postId)
+          : [...prev, postId]
     );
   }
 
-  // เพิ่มโพสต์ใหม่
   function handleAddPost({ title, body }) {
     const newPost = {
-      id: Date.now(), // ใช้ timestamp เป็น id ชั่วคราว
+      id: Date.now(),
       title,
       body,
     };
-    setPosts((prev) => [newPost, ...prev]); // เพิ่มไว้ด้านบน
+    setPosts((prev) => [newPost, ...prev]);
   }
 
   return (
@@ -92,6 +100,7 @@ function App() {
           >
             สมาชิก
           </h2>
+
           {USERS.map((user) => (
             <UserCard key={user.id} name={user.name} email={user.email} />
           ))}
