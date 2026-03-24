@@ -6,10 +6,13 @@ function AddPostForm({ onAddPost }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!title.trim() || !body.trim()) return; // ป้องกันส่งว่าง
+
+    if (!title.trim() || !body.trim()) return;
 
     onAddPost({ title, body });
-    setTitle(""); // เคลียร์ form
+
+    // เคลียร์ค่า
+    setTitle("");
     setBody("");
   }
 
@@ -24,26 +27,36 @@ function AddPostForm({ onAddPost }) {
         background: "#f7fafc",
       }}
     >
-      <h3 style={{ margin: "0 0 0.75rem", color: "#2d3748" }}>
-        เพิ่มโพสต์ใหม่
-      </h3>
+      <h3 style={{ marginBottom: "0.75rem" }}>เพิ่มโพสต์ใหม่</h3>
 
+      {/* INPUT TITLE */}
       <input
         type="text"
         placeholder="หัวข้อโพสต์"
         value={title}
+        maxLength={100} // จำกัด 100 ตัว
         onChange={(e) => setTitle(e.target.value)}
         style={{
           width: "100%",
           padding: "0.5rem",
-          marginBottom: "0.5rem",
           border: "1px solid #cbd5e0",
           borderRadius: "4px",
-          fontSize: "1rem",
-          boxSizing: "border-box",
         }}
       />
 
+      {/* CHARACTER COUNTER */}
+      <div
+        style={{
+          textAlign: "right",
+          fontSize: "0.8rem",
+          marginBottom: "0.5rem",
+          color: 100 - title.length < 10 ? "red" : "#718096",
+        }}
+      >
+        {title.length}/100
+      </div>
+
+      {/* TEXTAREA BODY */}
       <textarea
         placeholder="เนื้อหาโพสต์"
         value={body}
@@ -55,12 +68,10 @@ function AddPostForm({ onAddPost }) {
           marginBottom: "0.75rem",
           border: "1px solid #cbd5e0",
           borderRadius: "4px",
-          fontSize: "1rem",
-          resize: "vertical",
-          boxSizing: "border-box",
         }}
       />
 
+      {/* BUTTON */}
       <button
         type="submit"
         style={{
@@ -70,7 +81,6 @@ function AddPostForm({ onAddPost }) {
           padding: "0.5rem 1.5rem",
           borderRadius: "6px",
           cursor: "pointer",
-          fontSize: "1rem",
         }}
       >
         โพสต์
