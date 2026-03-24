@@ -1,9 +1,27 @@
+function getAvatarColor(name) {
+  const code = name.charCodeAt(0);
+  const group = code % 3;
+
+  switch (group) {
+    case 0:
+      return "#3b82f6"; // น้ำเงิน
+    case 1:
+      return "#22c55e"; // เขียว
+    case 2:
+      return "#a855f7"; // ม่วง
+    default:
+      return "#3b82f6";
+  }
+}
+
 function UserCard({ name, email }) {
-  // ดึงตัวอักษรแรกมาทำ avatar
   const initials = name
     .split(" ")
     .map((n) => n[0])
     .join("");
+
+  // 👇 ต้องมีบรรทัดนี้
+  const color = getAvatarColor(name);
 
   return (
     <div
@@ -22,7 +40,7 @@ function UserCard({ name, email }) {
         style={{
           width: "40px",
           height: "40px",
-          background: "#1e40af",
+          background: color, // 👈 ใช้ตรงนี้
           color: "white",
           borderRadius: "50%",
           display: "flex",
@@ -34,9 +52,14 @@ function UserCard({ name, email }) {
       >
         {initials}
       </div>
+
       <div>
-        <div style={{ fontWeight: "bold", color: "#2d3748" }}>{name}</div>
-        <div style={{ fontSize: "0.85rem", color: "#718096" }}>{email}</div>
+        <div style={{ fontWeight: "bold", color: "#2d3748" }}>
+          {name}
+        </div>
+        <div style={{ fontSize: "0.85rem", color: "#718096" }}>
+          {email}
+        </div>
       </div>
     </div>
   );
