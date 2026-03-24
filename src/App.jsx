@@ -35,6 +35,7 @@ function App() {
   return (
     <div>
       <Navbar />
+
       <div
         style={{
           maxWidth: "900px",
@@ -47,7 +48,8 @@ function App() {
       >
         {/* คอลัมน์ซ้าย: โพสต์ */}
         <div>
-          <PostList posts={POSTS} />
+          {/* 👇 เปลี่ยนตรงนี้เพื่อทดสอบ */}
+          <PostList posts={[]} />
         </div>
 
         {/* คอลัมน์ขวา: สมาชิก */}
@@ -61,8 +63,13 @@ function App() {
           >
             สมาชิก
           </h2>
+
           {USERS.map((user) => (
-            <UserCard key={user.id} name={user.name} email={user.email} />
+            <UserCard
+              key={user.id}
+              name={user.name}
+              email={user.email}
+            />
           ))}
         </div>
       </div>
