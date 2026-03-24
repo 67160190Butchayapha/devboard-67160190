@@ -3,25 +3,23 @@ import PostCard from "./PostCard";
 
 function PostList({ posts, favorites, onToggleFavorite }) {
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("desc"); // 👈 ใหม่สุดก่อน
 
-  // กรองโพสต์ตาม search
+  // 🔍 filter
   const filtered = posts.filter((post) =>
-    post.title.toLowerCase().includes(search.toLowerCase()),
+    post.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // 🔽 sort
+  const sorted = [...filtered].sort((a, b) =>
+    sortOrder === "desc" ? b.id - a.id : a.id - b.id
   );
 
   return (
     <div>
-      <h2
-        style={{
-          color: "#2d3748",
-          borderBottom: "2px solid #1e40af",
-          paddingBottom: "0.5rem",
-        }}
-      >
-        โพสต์ล่าสุด
-      </h2>
+      <h2>โพสต์ล่าสุด</h2>
 
-      {/* Search Input */}
+      {/* 🔍 Search */}
       <input
         type="text"
         placeholder="ค้นหาโพสต์..."
@@ -29,24 +27,28 @@ function PostList({ posts, favorites, onToggleFavorite }) {
         onChange={(e) => setSearch(e.target.value)}
         style={{
           width: "100%",
-          padding: "0.5rem 0.75rem",
-          border: "1px solid #cbd5e0",
-          borderRadius: "6px",
-          fontSize: "1rem",
-          marginBottom: "1rem",
-          boxSizing: "border-box",
+          marginBottom: "10px",
+          padding: "5px",
         }}
       />
 
-      {/* ถ้าไม่พบโพสต์ */}
-      {filtered.length === 0 && (
-        <p style={{ color: "#718096", textAlign: "center", padding: "2rem" }}>
-          ไม่พบโพสต์ที่ค้นหา
-        </p>
-      )}
+      {/* 🔽 ปุ่ม Sort */}
+      <button
+        onClick={() =>
+          setSortOrder(sortOrder === "desc" ? "asc" : "desc")
+        }
+        style={{ marginBottom: "10px" }}
+      >
+        {sortOrder === "desc"
+          ? "🔽 ใหม่สุดก่อน"
+          : "🔼 เก่าสุดก่อน"}
+      </button>
 
-      {/* แสดงรายการโพสต์ */}
-      {filtered.map((post) => (
+      {/* ❌ ไม่พบโพสต์ */}
+      {sorted.length === 0 && <p>ไม่พบโพสต์</p>}
+
+      {/* 📄 แสดงโพสต์ */}
+      {sorted.map((post) => (
         <PostCard
           key={post.id}
           title={post.title}
