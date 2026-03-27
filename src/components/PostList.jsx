@@ -2,8 +2,11 @@ import { useState } from "react";
 import PostCard from "./PostCard";
 import LoadingSpinner from "./LoadingSpinner";
 import useFetch from "../hooks/useFetch";
+import { useFavorites } from "../context/FavoritesContext"; // ⭐ เพิ่ม
 
-function PostList({ favorites, onToggleFavorite }) {
+function PostList() {
+  const { favorites, toggleFavorite } = useFavorites(); // ⭐ ใช้ context
+
   const { data: posts, loading, error } = useFetch(
     "https://jsonplaceholder.typicode.com/posts"
   );
@@ -11,6 +14,9 @@ function PostList({ favorites, onToggleFavorite }) {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const POSTS_PER_PAGE = 10;
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   const filtered = posts
     .slice(0, 20)
@@ -24,9 +30,6 @@ function PostList({ favorites, onToggleFavorite }) {
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
   );
-
-  if (loading) return <LoadingSpinner />;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div>
@@ -46,12 +49,11 @@ function PostList({ favorites, onToggleFavorite }) {
         <PostCard
           key={post.id}
           post={post}
-          isFavorite={favorites.includes(post.id)}
-          onToggleFavorite={() => onToggleFavorite(post.id)}
+          isFavorite={favorites.includes(post.id)} // ⭐ ใช้จาก context
+          onToggleFavorite={() => toggleFavorite(post.id)} // ⭐ ใช้ context
         />
       ))}
 
-      {/* pagination */}
       <div style={{ marginTop: "1rem" }}>
         <button
           onClick={() => setCurrentPage((p) => p - 1)}
