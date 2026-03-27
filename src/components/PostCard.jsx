@@ -31,6 +31,7 @@ function PostCard({ post }) {
       </p>
 
       <div style={{ display: "flex", gap: "0.5rem" }}>
+        {/* ปุ่มถูกใจ */}
         <button
           onClick={() => toggleFavorite(post.id)}
           style={{
@@ -44,6 +45,7 @@ function PostCard({ post }) {
           {isFavorite ? "❤️" : "🤍"}
         </button>
 
+        {/* ปุ่มดูความคิดเห็น */}
         <button
           onClick={() => setShowComments((prev) => !prev)}
           style={{
@@ -56,10 +58,11 @@ function PostCard({ post }) {
             color: "#4a5568",
           }}
         >
-          {showComments ? "▲ ซ่อน" : "▼ ความคิดเห็น"}
+          {showComments ? "▲ ซ่อน" : "▼ ดูความคิดเห็น"}
         </button>
       </div>
 
+      {/* แสดง comments เมื่อกด — fetch เกิดขึ้นตอนนี้ */}
       {showComments && <CommentList postId={post.id} />}
     </div>
   );
